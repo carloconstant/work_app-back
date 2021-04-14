@@ -150,7 +150,7 @@ When sending data with AJAX, we must stringify it with `JSON.stringify`. See the
 ```js
 const create = function (data) {
   return $.ajax({
-    url: config.apiUrl + '/mangos/',
+    url: config.apiUrl + '/sets/',
     method: 'POST',
     headers: {
       Authorization: 'Token ' + store.user.token
@@ -174,7 +174,7 @@ import json
 
 ....
 
-class Mangos(APIView):
+class sets(APIView):
     def post(self, request):
         # Create variable to store readable JSON data
         data = json.loads(request.body)

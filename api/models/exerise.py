@@ -1,13 +1,13 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, get_set_model
 
 # Create your models here.
-class Set(models.Model):
+class Exerise(models.Model):
   # define fields
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
-  rep_count = models.IntegerField()
-  set_count = models.IntegerField()
-  weight = models.IntegerField()
+  body_part = models.CharField(max_length=1000)
+
+  set_count = models.ForeignKey(get_set_model())
   owner = models.ForeignKey(
       get_user_model(),
       on_delete=models.CASCADE
@@ -21,7 +21,6 @@ class Set(models.Model):
     """Returns dictionary version of set models"""
     return {
         'id': self.id,
-        'rep_count': self.rep_count,
-        'set_count':self.set_count,
-        'weight': self.weight
+        'body_part': self.rep_count,
+        'set_count':self.set_count
     }

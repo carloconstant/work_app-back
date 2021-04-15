@@ -22,7 +22,7 @@ class Sets(generics.ListCreateAPIView):
         sets = Set.objects.filter(owner=request.user.id)
         # Run the data through the serializer
         data = SetSerializer(sets, many=True).data
-        return Response({ 'sets': data })
+        return Response(data)
 
     def post(self, request):
         """Create request"""

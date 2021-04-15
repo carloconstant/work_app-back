@@ -7,9 +7,8 @@ curl "http://localhost:8000/sets/" \
   --header "Authorization: Token ${TOKEN}" \
   --data '{
     "set": {
-      "name": "'"${NAME}"'",
-      "color": "'"${COLOR}"'",
-      "ripe": "'"${RIPE}"'"
+      "set_count": "'"${SET_COUNT}"'",
+      "rep_count": "'"${REP_COUNT}"'"
     }
   }'
 

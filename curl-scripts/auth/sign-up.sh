@@ -1,4 +1,4 @@
-curl "http://localhost:8000/sign-up/" \
+curl "https://workout-app956.herokuapp.com/sign-up/" \
   --include \
   --request POST \
   --header "Content-Type: application/json" \

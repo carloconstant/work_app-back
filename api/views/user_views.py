@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import status, generics
 from django.shortcuts import get_object_or_404
+import json
 from django.contrib.auth import get_user, authenticate, login, logout
 
 from ..serializers import UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer
@@ -19,9 +20,12 @@ class SignUp(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
 
     def post(self, request):
+        edit = json.loads (request.body)
         # Pass the request data to the serializer to validate it
-        user = UserRegisterSerializer(data=request.data['credentials'])
+
+        user = UserRegisterSerializer(data=edit['credentials'])
         # If that data is in the correct format...
+
         if user.is_valid():
             # Actually create the user using the UserSerializer (the `create` method defined there)
             created_user = UserSerializer(data=user.data)
@@ -45,7 +49,8 @@ class SignIn(generics.CreateAPIView):
     serializer_class = UserSerializer
 
     def post(self, request):
-        creds = request.data['credentials']
+        data = json.loads(request.body)
+        creds = data['credentials']
         print(creds)
         # We can pass our email and password along with the request to the
         # `authenticate` method. If we had used the default user, we would need
@@ -80,9 +85,10 @@ class SignOut(generics.DestroyAPIView):
 
 class ChangePassword(generics.UpdateAPIView):
     def partial_update(self, request):
+        data = json.loads(request.data)
         user = request.user
         # Pass data through serializer
-        serializer = ChangePasswordSerializer(data=request.data['passwords'])
+        serializer = ChangePasswordSerializer(data=data['passwords'])
         if serializer.is_valid():
             # This is included with the Django base user model
             # https://docs.djangoproject.com/en/3.1/ref/contrib/auth/#django.contrib.auth.models.User.check_password

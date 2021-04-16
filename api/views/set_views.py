@@ -26,9 +26,10 @@ class Sets(generics.ListCreateAPIView):
 
     def post(self, request):
         """Create request"""
+        data = json.loads(request.body)
         print(request.user)
         # Add user to request data object
-        new_set = request.data['set']
+        new_set = data['set']
         # Serialize/create set
         new_set['owner'] = request.user.id
         set = SetSerializer(data=new_set)
@@ -71,8 +72,9 @@ class SetDetail(generics.RetrieveUpdateDestroyAPIView):
         # This "gets" the owner key on the data['set'] dictionary
         # and returns False if it doesn't find it. So, if it's found we
         # remove it.
-        if request.data['set'].get('owner', False):
-            del request.data['set']['owner']
+        data = json.loads(request.body)
+        if data['set'].get('owner', False):
+            del data['set']['owner']
 
         # Locate set
         # get_object_or_404 returns a object representation of our set
@@ -82,9 +84,9 @@ class SetDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this set')
 
         # Add owner to data object now that we know this user owns the resource
-        request.data['set']['owner'] = request.user.id
+        data['set']['owner'] = request.user.id
         # Validate updates with serializer
-        data = SetSerializer(set, data=request.data['set'])
+        data = SetSerializer(set, data=data['set'])
         if data.is_valid():
             # Save & send a 204 no content
             data.save()
